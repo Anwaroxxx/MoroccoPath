@@ -1,0 +1,10 @@
+{
+    "slug": "ofppt",
+    "name": "OFPPT — Office de la Formation Professionnelle et de la Promotion du Travail",
+    "source_type": "official_institution",
+    "website": "https://www.ofppt.ma",
+    "endpoint": null,
+    "format": "json",
+    "default_academic_year": "2026/2027",
+    "notes": "Scaffold definition. No records are ingested until an official, structured endpoint is confirmed. Set 'endpoint' once available, or ingest from a local file with --fixture."
+}
