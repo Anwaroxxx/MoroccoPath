@@ -12,6 +12,9 @@ final class StudentProfile
 {
     /**
      * @param  array<int, string>  $bacBranchCodes
+     * @param  array<int, string>  $interestCodes
+     * @param  array<int, string>  $skillCodes
+     * @param  array<int, string>  $careerGoalCodes
      */
     public function __construct(
         public readonly ?string $educationLevelCode = null,
@@ -23,5 +26,8 @@ final class StudentProfile
         public readonly ?string $region = null,
         public readonly ?float $budgetMax = null,
         public readonly bool $willingToRelocate = false,
+        public readonly array $interestCodes = [],
+        public readonly array $skillCodes = [],
+        public readonly array $careerGoalCodes = [],
     ) {}
 }

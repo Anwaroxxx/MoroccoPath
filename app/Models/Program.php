@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
  * @property string $slug
  * @property StudyMode $study_mode
  * @property ProgramStatus $status
+ * @property Campus|null $campus
  */
 #[Fillable([
     'institution_id',
