@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
 
 /**
  * Academic-year snapshot of a program. Historical facts are never overwritten.
@@ -15,6 +16,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property int $program_id
  * @property string $academic_year
  * @property ProgramVersionStatus $status
+ * @property Carbon|null $application_start
+ * @property Carbon|null $application_end
  */
 #[Fillable([
     'program_id',
