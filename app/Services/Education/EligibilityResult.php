@@ -23,6 +23,8 @@ final class EligibilityResult
         public readonly array $failedRequirements = [],
         public readonly array $warnings = [],
         public readonly array $sources = [],
+        public readonly ?int $educationPassed = null,
+        public readonly ?int $educationTotal = null,
     ) {}
 
     /**
@@ -40,6 +42,8 @@ final class EligibilityResult
             'failed_requirements' => $this->failedRequirements,
             'warnings' => $this->warnings,
             'sources' => $this->sources,
+            'education_passed' => $this->educationPassed,
+            'education_total' => $this->educationTotal,
         ];
     }
 }

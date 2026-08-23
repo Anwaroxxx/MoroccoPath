@@ -84,6 +84,8 @@ final class EligibilityEngine
         $warnings = [];
         $scoreTotal = 0;
         $scorePassed = 0;
+        $educationPassed = 0;
+        $educationTotal = 0;
         $anyGroupPasses = false;
 
         foreach ($rules->groupBy(fn (EligibilityRule $rule): string => $rule->logic_group) as $groupRules) {
@@ -100,6 +102,13 @@ final class EligibilityEngine
 
                 if ($rule->condition_type->isProcessCondition()) {
                     continue;
+                }
+
+                if ($this->isEducationCondition($rule)) {
+                    $educationTotal++;
+                    if ($passed) {
+                        $educationPassed++;
+                    }
                 }
 
                 $sentence = RequirementDescriber::describe($rule);
@@ -133,7 +142,19 @@ final class EligibilityEngine
             failedRequirements: $failed,
             warnings: array_values(array_unique($warnings)),
             sources: $sources,
+            educationPassed: $educationTotal > 0 ? $educationPassed : null,
+            educationTotal: $educationTotal > 0 ? $educationTotal : null,
         );
+    }
+
+    private function isEducationCondition(EligibilityRule $rule): bool
+    {
+        return in_array($rule->condition_type, [
+            EligibilityConditionType::EducationLevelMin,
+            EligibilityConditionType::EducationLevelAnyOf,
+            EligibilityConditionType::QualificationAnyOf,
+            EligibilityConditionType::BacBranchAnyOf,
+        ], true);
     }
 
     /**
