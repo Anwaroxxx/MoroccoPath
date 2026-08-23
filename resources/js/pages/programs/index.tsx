@@ -4,6 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import PageHeader from '@/components/page-header';
+import { useI18n } from '@/lib/i18n';
 import AppLayout from '@/layouts/app-layout';
 import { home } from '@/routes';
 
@@ -30,6 +31,7 @@ export default function ProgramsIndex({
     programs: Paginated;
     filters: { q: string; city: string; mode: string; interest: string };
 }) {
+    const { t } = useI18n();
     const search = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
@@ -56,8 +58,8 @@ export default function ProgramsIndex({
             <Head title="Programs" />
             <div className="min-h-screen p-4 md:p-6">
                 <PageHeader
-                    title="Programs"
-                    subtitle="Published opportunities only — every record here has been reviewed against its official source."
+                    title={t('programs.title')}
+                    subtitle={t('programs.subtitle')}
                 />
 
                 <form
@@ -67,13 +69,13 @@ export default function ProgramsIndex({
                     <Input
                         name="q"
                         defaultValue={filters.q}
-                        placeholder="Search…"
+                        placeholder={t('common.search')}
                         className="max-w-xs"
                     />
                     <Input
                         name="city"
                         defaultValue={filters.city}
-                        placeholder="City"
+                        placeholder={t('common.city')}
                         className="max-w-[10rem]"
                     />
                     <select
@@ -92,7 +94,7 @@ export default function ProgramsIndex({
                         className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:opacity-90"
                         type="submit"
                     >
-                        Filter
+                        {t('common.filter')}
                     </button>
                 </form>
 

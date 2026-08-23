@@ -3,6 +3,7 @@ import { MapPinned, Route } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import PageHeader from '@/components/page-header';
+import { useI18n } from '@/lib/i18n';
 import AppLayout from '@/layouts/app-layout';
 import { home } from '@/routes';
 
@@ -17,6 +18,7 @@ type Path = {
 };
 
 export default function PathsIndex({ paths }: { paths: Path[] }) {
+    const { t } = useI18n();
     return (
         <AppLayout
             breadcrumbs={[
@@ -27,8 +29,8 @@ export default function PathsIndex({ paths }: { paths: Path[] }) {
             <Head title="Career paths" />
             <div className="min-h-screen p-4 md:p-6">
                 <PageHeader
-                    title="Career paths"
-                    subtitle="Multiple routes can lead to the same career — explore the steps of each one, in any direction."
+                    title={t('paths.title')}
+                    subtitle={t('paths.subtitle')}
                 />
 
                 <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
