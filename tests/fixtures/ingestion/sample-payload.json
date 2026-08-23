@@ -1,0 +1,37 @@
+{
+    "_notice": "FIXTURE FOR TESTS ONLY. All names, identifiers and URLs are fictional and must never be treated as real Moroccan data.",
+    "institutions": [
+        {
+            "external_identifier": "ISTA-CASA-001",
+            "name": "Institut Spécialisé de Technologie Appliquée Casablanca",
+            "alt_names": ["ISTA Casablanca", "ISTA Casa"],
+            "type": "vocational_training",
+            "website": "https://example.org/ista-casa",
+            "campuses": [
+                {"name": "Siège", "city": "Casablanca", "region": "Casablanca-Settat"}
+            ],
+            "programs": [
+                {
+                    "external_identifier": "PROG-DD-001",
+                    "name": "Développement Digital",
+                    "study_mode": "full_time",
+                    "duration_months": 24,
+                    "duration_label": "2 ans",
+                    "language": "fr",
+                    "level": "TECHNICIEN_SPECIALISE",
+                    "academic_year": "2026/2027",
+                    "interests": ["TECHNOLOGY"],
+                    "skills": ["PROGRAMMING"]
+                }
+            ]
+        },
+        {
+            "external_identifier": "OTHER-REG-777",
+            "name": "ISTA Casa"
+        },
+        {
+            "name": "",
+            "type": "coding_school"
+        }
+    ]
+}
