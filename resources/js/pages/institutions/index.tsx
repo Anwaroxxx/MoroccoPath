@@ -3,6 +3,7 @@ import { MapPinned } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import PageHeader from '@/components/page-header';
 import AppLayout from '@/layouts/app-layout';
 import { home } from '@/routes';
 
@@ -57,12 +58,10 @@ export default function InstitutionsIndex({
         >
             <Head title="Institutions" />
             <div className="min-h-screen p-4 md:p-6">
-                <h1 className="text-2xl font-bold tracking-tight">
-                    Institutions
-                </h1>
-                <p className="mt-1 text-sm text-muted-foreground">
-                    Verified organizations with published programs.
-                </p>
+                <PageHeader
+                    title="Institutions"
+                    subtitle="Verified organizations with published programs — universities, OFPPT centers, coding schools and more."
+                />
 
                 <form className="mt-5 flex max-w-xl gap-2" onSubmit={search}>
                     <Input
@@ -91,7 +90,7 @@ export default function InstitutionsIndex({
                             key={institution.id}
                             href={`/institutions/${institution.slug}`}
                         >
-                            <Card className="h-full transition-shadow hover:shadow-md">
+                            <Card className="h-full transition-all hover:-translate-y-0.5 hover:shadow-md">
                                 <CardContent className="p-5">
                                     <h2 className="font-semibold">
                                         {institution.name}

@@ -127,10 +127,23 @@ export default function Home() {
                 <section className="relative overflow-hidden border-b">
                     <div
                         aria-hidden
-                        className="pointer-events-none absolute inset-0 opacity-70"
+                        className="pointer-events-none absolute inset-0 opacity-60"
                         style={{
                             background:
-                                'radial-gradient(60rem 30rem at 80% -10%, color-mix(in oklab, var(--primary) 18%, transparent), transparent), radial-gradient(40rem 20rem at 10% 10%, color-mix(in oklab, var(--primary) 10%, transparent), transparent)',
+                                'radial-gradient(55rem 28rem at 85% -10%, color-mix(in oklab, var(--primary) 22%, transparent), transparent), radial-gradient(40rem 22rem at 5% 0%, color-mix(in oklab, var(--accent) 16%, transparent), transparent)',
+                        }}
+                    />
+                    <div
+                        aria-hidden
+                        className="pointer-events-none absolute inset-0 opacity-[0.05]"
+                        style={{
+                            backgroundImage:
+                                'repeating-conic-gradient(from 45deg at 50% 50%, var(--primary) 0% 12.5%, transparent 12.5% 25%)',
+                            backgroundSize: '56px 56px',
+                            maskImage:
+                                'linear-gradient(to bottom, black, transparent 70%)',
+                            WebkitMaskImage:
+                                'linear-gradient(to bottom, black, transparent 70%)',
                         }}
                     />
                     <div className="relative mx-auto grid max-w-6xl gap-10 px-4 py-16 md:grid-cols-[1.2fr_1fr] md:items-center md:px-6 md:py-24">

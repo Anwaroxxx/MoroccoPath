@@ -2,6 +2,7 @@ import { Head, Link } from '@inertiajs/react';
 import { MapPinned, Route } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
+import PageHeader from '@/components/page-header';
 import AppLayout from '@/layouts/app-layout';
 import { home } from '@/routes';
 
@@ -25,18 +26,15 @@ export default function PathsIndex({ paths }: { paths: Path[] }) {
         >
             <Head title="Career paths" />
             <div className="min-h-screen p-4 md:p-6">
-                <h1 className="text-2xl font-bold tracking-tight">
-                    Career paths
-                </h1>
-                <p className="mt-1 text-sm text-muted-foreground">
-                    Multiple routes can lead to the same career. Pick a path to
-                    see its steps.
-                </p>
+                <PageHeader
+                    title="Career paths"
+                    subtitle="Multiple routes can lead to the same career — explore the steps of each one, in any direction."
+                />
 
                 <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                     {paths.map((path) => (
                         <Link key={path.id} href={`/paths/${path.slug}`}>
-                            <Card className="h-full transition-shadow hover:shadow-md">
+                            <Card className="h-full transition-all hover:-translate-y-0.5 hover:shadow-md">
                                 <CardContent className="p-5">
                                     <Route className="size-5 text-primary" />
                                     <h2 className="mt-3 font-semibold">

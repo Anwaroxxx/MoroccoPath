@@ -3,6 +3,7 @@ import { MapPinned } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import PageHeader from '@/components/page-header';
 import AppLayout from '@/layouts/app-layout';
 import { home } from '@/routes';
 
@@ -54,11 +55,10 @@ export default function ProgramsIndex({
         >
             <Head title="Programs" />
             <div className="min-h-screen p-4 md:p-6">
-                <h1 className="text-2xl font-bold tracking-tight">Programs</h1>
-                <p className="mt-1 text-sm text-muted-foreground">
-                    Published opportunities only — every record here has been
-                    reviewed.
-                </p>
+                <PageHeader
+                    title="Programs"
+                    subtitle="Published opportunities only — every record here has been reviewed against its official source."
+                />
 
                 <form
                     className="mt-5 flex max-w-3xl flex-wrap gap-2"
@@ -102,7 +102,7 @@ export default function ProgramsIndex({
                             key={program.id}
                             href={`/programs/${program.slug}`}
                         >
-                            <Card className="h-full transition-shadow hover:shadow-md">
+                            <Card className="h-full transition-all hover:-translate-y-0.5 hover:shadow-md">
                                 <CardContent className="p-5">
                                     <h2 className="font-semibold">
                                         {program.name}
