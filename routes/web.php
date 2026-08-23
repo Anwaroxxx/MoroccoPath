@@ -3,11 +3,7 @@
 use App\Http\Controllers\Admin;
 use Illuminate\Support\Facades\Route;
 
-Route::inertia('/', 'welcome')->name('home');
-
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::inertia('dashboard', 'dashboard')->name('dashboard');
-});
+Route::inertia('/', 'home')->name('home');
 
 /*
  * Internal administration (spec §22, §33). Never exposed publicly:

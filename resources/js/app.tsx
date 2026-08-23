@@ -12,7 +12,8 @@ createInertiaApp({
     title: (title) => (title ? `${title} - ${appName}` : appName),
     layout: (name) => {
         switch (true) {
-            case name === 'welcome':
+            // Public pages render without an app shell.
+            case name === 'home':
                 return null;
             case name.startsWith('auth/'):
                 return AuthLayout;
