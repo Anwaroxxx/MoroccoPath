@@ -137,3 +137,49 @@ class ApiV1Test extends TestCase
             ->assertJsonPath('message', 'No profile yet. Save one via PATCH /v1/me/profile first.');
     }
 }
+
+class AuthTokenApiTest extends TestCase
+{
+    use RefreshDatabase;
+
+    public function test_valid_credentials_issue_a_scoped_token(): void
+    {
+        $user = User::factory()->create(['password' => 'secret-password']);
+
+        $this->postJson('/api/v1/auth/token', [
+            'email' => $user->email,
+            'password' => 'secret-password',
+            'device_name' => 'android-phone',
+        ])
+            ->assertOk()
+            ->assertJsonStructure(['token', 'user' => ['id', 'name', 'email']]);
+
+        $this->assertDatabaseHas('personal_access_tokens', [
+            'tokenable_id' => $user->id,
+            'name' => 'android-phone',
+        ]);
+    }
+
+    public function test_bad_credentials_are_rejected(): void
+    {
+        $user = User::factory()->create();
+
+        $this->postJson('/api/v1/auth/token', [
+            'email' => $user->email,
+            'password' => 'wrong-password',
+            'device_name' => 'phone',
+        ])->assertUnprocessable();
+    }
+
+    public function test_token_can_be_revoked(): void
+    {
+        $user = User::factory()->create();
+        $token = $user->createToken('phone');
+
+        $this->withToken($token->plainTextToken)
+            ->deleteJson('/api/v1/auth/token')
+            ->assertOk();
+
+        $this->assertSame(0, $user->tokens()->count());
+    }
+}

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\V1\AuthTokenApiController;
 use App\Http\Controllers\Api\V1\CareerPathApiController;
 use App\Http\Controllers\Api\V1\ProgramApiController;
 use App\Http\Controllers\Api\V1\RecommendationApiController;
@@ -11,6 +12,13 @@ use Illuminate\Support\Facades\Route;
  * requires a Sanctum personal access token (Bearer).
  */
 Route::prefix('v1')->group(function (): void {
+    Route::post('auth/token', [AuthTokenApiController::class, 'store'])
+        ->middleware('throttle:5,1')
+        ->name('api.v1.auth.token.store');
+    Route::delete('auth/token', [AuthTokenApiController::class, 'destroy'])
+        ->middleware(['auth:sanctum', 'throttle:10,1'])
+        ->name('api.v1.auth.token.destroy');
+
     Route::get('programs', [ProgramApiController::class, 'index'])->name('api.v1.programs.index');
     Route::get('programs/{program:slug}', [ProgramApiController::class, 'show'])->name('api.v1.programs.show');
 
