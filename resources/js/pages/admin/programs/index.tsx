@@ -1,9 +1,13 @@
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, router } from '@inertiajs/react';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
 import { dashboard as adminDashboard } from '@/routes/admin';
-import { index as programsRoute } from '@/routes/admin/programs';
+import {
+    index as programsRoute,
+    status as programStatusRoute,
+} from '@/routes/admin/programs';
 import { Pagination } from '@/pages/admin/institutions';
 
 type LastReference = {
@@ -139,7 +143,47 @@ export default function AdminPrograms({
                                             ) : null}
                                         </td>
                                         <td className="p-3">
-                                            {program.status}
+                                            <Badge
+                                                variant={
+                                                    program.status ===
+                                                    'published'
+                                                        ? 'default'
+                                                        : 'outline'
+                                                }
+                                            >
+                                                {program.status}
+                                            </Badge>
+                                            <Button
+                                                size="sm"
+                                                variant={
+                                                    program.status ===
+                                                    'published'
+                                                        ? 'outline'
+                                                        : 'default'
+                                                }
+                                                className="ml-2"
+                                                onClick={() =>
+                                                    router.patch(
+                                                        programStatusRoute({
+                                                            program: program.id,
+                                                        }).url,
+                                                        {
+                                                            status:
+                                                                program.status ===
+                                                                'published'
+                                                                    ? 'draft'
+                                                                    : 'published',
+                                                        },
+                                                        {
+                                                            preserveScroll: true,
+                                                        },
+                                                    )
+                                                }
+                                            >
+                                                {program.status === 'published'
+                                                    ? 'Unpublish'
+                                                    : 'Publish'}
+                                            </Button>
                                         </td>
                                         <td className="p-3 text-xs">
                                             {program.last_reference ? (

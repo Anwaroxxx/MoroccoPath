@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\ProgramStatus;
 use App\Enums\VerificationStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Program;
 use App\Models\SourceReference;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -76,5 +79,22 @@ class ProgramsController extends Controller
             'academic_year' => $reference->academic_year,
             'last_verified_at' => $reference->last_verified_at?->toDateString(),
         ];
+    }
+
+    /**
+     * Publication is an explicit administrative decision: only admins may
+     * make an ingested program publicly visible.
+     */
+    public function updateStatus(Request $request, Program $program): RedirectResponse
+    {
+        $validated = $request->validate([
+            'status' => ['required', Rule::enum(ProgramStatus::class)],
+        ]);
+
+        $program->update(['status' => $validated['status']]);
+
+        return redirect()
+            ->back()
+            ->with('success', "Program status set to {$validated['status']}.");
     }
 }
