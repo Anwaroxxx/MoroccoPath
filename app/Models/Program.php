@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
  * @property int $institution_id
  * @property string $name
  * @property string $slug
+ * @property string|null $external_identifier
  * @property StudyMode $study_mode
  * @property ProgramStatus $status
  * @property Campus|null $campus
@@ -28,6 +29,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
     'campus_id',
     'name',
     'slug',
+    'external_identifier',
     'description',
     'education_level_id',
     'duration_months',
