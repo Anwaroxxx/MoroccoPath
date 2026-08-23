@@ -18,6 +18,9 @@ createInertiaApp({
                 return AuthLayout;
             case name.startsWith('settings/'):
                 return [AppLayout, SettingsLayout];
+            // Admin pages manage their own <AppLayout> wrapper with breadcrumbs.
+            case name.startsWith('admin/'):
+                return null;
             default:
                 return AppLayout;
         }
