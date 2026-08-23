@@ -1,4 +1,4 @@
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, usePage } from '@inertiajs/react';
 import {
     ArrowRight,
     BadgeCheck,
@@ -8,7 +8,7 @@ import {
     Route,
     Wallet,
 } from 'lucide-react';
-import { home, login, register } from '@/routes';
+import { home, login, logout, register } from '@/routes';
 
 const educationLevels = [
     'No Bac',
@@ -60,6 +60,9 @@ const features = [
 ];
 
 export default function Home() {
+    const { auth } = usePage().props;
+    const isLoggedIn = auth.user !== null;
+
     return (
         <>
             <Head title="MoroccoPath — Find your path">
@@ -78,18 +81,45 @@ export default function Home() {
                         MoroccoPath
                     </Link>
                     <nav className="flex items-center gap-2 text-sm">
-                        <Link
-                            href={login()}
-                            className="rounded-md px-3 py-2 hover:bg-muted"
-                        >
-                            Log in
-                        </Link>
-                        <Link
-                            href={register()}
-                            className="rounded-md bg-primary px-3 py-2 font-medium text-primary-foreground hover:opacity-90"
-                        >
-                            Get started
-                        </Link>
+                        {isLoggedIn ? (
+                            <>
+                                <Link
+                                    href="/results"
+                                    className="rounded-md px-3 py-2 hover:bg-muted"
+                                >
+                                    My paths
+                                </Link>
+                                <Link
+                                    href="/orientation"
+                                    className="rounded-md bg-primary px-3 py-2 font-medium text-primary-foreground hover:opacity-90"
+                                >
+                                    Update my profile
+                                </Link>
+                                <Link
+                                    href={logout()}
+                                    method="post"
+                                    as="button"
+                                    className="rounded-md px-3 py-2 hover:bg-muted"
+                                >
+                                    Log out
+                                </Link>
+                            </>
+                        ) : (
+                            <>
+                                <Link
+                                    href={login()}
+                                    className="rounded-md px-3 py-2 hover:bg-muted"
+                                >
+                                    Log in
+                                </Link>
+                                <Link
+                                    href={register()}
+                                    className="rounded-md bg-primary px-3 py-2 font-medium text-primary-foreground hover:opacity-90"
+                                >
+                                    Get started
+                                </Link>
+                            </>
+                        )}
                     </nav>
                 </header>
 
@@ -121,10 +151,12 @@ export default function Home() {
                             </p>
                             <div className="mt-8 flex flex-wrap items-center gap-3">
                                 <Link
-                                    href={register()}
+                                    href={isLoggedIn ? '/results' : register()}
                                     className="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-3 font-medium text-primary-foreground transition-opacity hover:opacity-90"
                                 >
-                                    Start exploring
+                                    {isLoggedIn
+                                        ? 'See my paths'
+                                        : 'Start exploring'}
                                     <ArrowRight className="size-4" />
                                 </Link>
                                 <a
@@ -256,10 +288,10 @@ export default function Home() {
                         the paths open to you today.
                     </p>
                     <Link
-                        href={register()}
+                        href={isLoggedIn ? '/results' : register()}
                         className="mt-8 inline-flex items-center gap-2 rounded-md bg-primary px-6 py-3 font-medium text-primary-foreground transition-opacity hover:opacity-90"
                     >
-                        Create my free account
+                        {isLoggedIn ? 'See my paths' : 'Create my free account'}
                         <ArrowRight className="size-4" />
                     </Link>
                 </section>
