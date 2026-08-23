@@ -55,7 +55,7 @@ return new class extends Migration
         Schema::create('alternative_paths', function (Blueprint $table) {
             $table->id();
             $table->foreignId('program_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('alternative_program_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('alternative_program_id')->constrained('programs')->cascadeOnDelete();
             $table->string('note')->nullable();
             $table->unsignedInteger('sort_order')->default(0);
             $table->timestamps();
