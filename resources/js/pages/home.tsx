@@ -9,6 +9,8 @@ import {
     Wallet,
 } from 'lucide-react';
 import { home, login, logout, register } from '@/routes';
+import LanguageSwitcher from '@/components/language-switcher';
+import { useI18n } from '@/lib/i18n';
 
 const educationLevels = [
     'No Bac',
@@ -62,6 +64,7 @@ const features = [
 export default function Home() {
     const { auth } = usePage().props;
     const isLoggedIn = auth.user !== null;
+    const { t } = useI18n();
 
     return (
         <>
@@ -81,19 +84,20 @@ export default function Home() {
                         MoroccoPath
                     </Link>
                     <nav className="flex items-center gap-2 text-sm">
+                        <LanguageSwitcher />
                         {isLoggedIn ? (
                             <>
                                 <Link
                                     href="/results"
                                     className="rounded-md px-3 py-2 hover:bg-muted"
                                 >
-                                    My paths
+                                    {t('nav.myPaths')}
                                 </Link>
                                 <Link
                                     href="/orientation"
                                     className="rounded-md bg-primary px-3 py-2 font-medium text-primary-foreground hover:opacity-90"
                                 >
-                                    Update my profile
+                                    {t('nav.updateProfile')}
                                 </Link>
                                 <Link
                                     href={logout()}
@@ -110,13 +114,13 @@ export default function Home() {
                                     href={login()}
                                     className="rounded-md px-3 py-2 hover:bg-muted"
                                 >
-                                    Log in
+                                    {t('nav.login')}
                                 </Link>
                                 <Link
                                     href={register()}
                                     className="rounded-md bg-primary px-3 py-2 font-medium text-primary-foreground hover:opacity-90"
                                 >
-                                    Get started
+                                    {t('nav.register')}
                                 </Link>
                             </>
                         )}
@@ -150,17 +154,13 @@ export default function Home() {
                         <div>
                             <p className="mb-3 inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs text-muted-foreground">
                                 <span className="size-2 rounded-full bg-emerald-500" />
-                                Built for every level — no Bac to doctorate
+                                {t('hero.badge')}
                             </p>
                             <h1 className="text-4xl leading-tight font-bold tracking-tight text-balance md:text-6xl">
-                                Every path you can actually take
-                                in&nbsp;Morocco.
+                                {t('hero.title')}
                             </h1>
                             <p className="mt-5 max-w-xl text-lg text-pretty text-muted-foreground">
-                                Universities, OFPPT, coding schools, vocational
-                                training. Tell us your situation — we map it to
-                                the opportunities that fit, explain why each one
-                                fits, and what to do when it doesn&apos;t.
+                                {t('hero.subtitle')}
                             </p>
                             <div className="mt-8 flex flex-wrap items-center gap-3">
                                 <Link
@@ -168,8 +168,8 @@ export default function Home() {
                                     className="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-3 font-medium text-primary-foreground transition-opacity hover:opacity-90"
                                 >
                                     {isLoggedIn
-                                        ? 'See my paths'
-                                        : 'Start exploring'}
+                                        ? t('hero.cta.mine')
+                                        : t('hero.cta')}
                                     <ArrowRight className="size-4" />
                                 </Link>
                                 <a
@@ -240,7 +240,7 @@ export default function Home() {
                     className="mx-auto max-w-6xl px-4 py-16 md:px-6 md:py-24"
                 >
                     <h2 className="text-3xl font-bold tracking-tight">
-                        How MoroccoPath works
+                        {t('hero.howItWorks')}
                     </h2>
                     <p className="mt-2 max-w-2xl text-muted-foreground">
                         Not a school directory. A system that maps your
@@ -304,7 +304,7 @@ export default function Home() {
                         href={isLoggedIn ? '/results' : register()}
                         className="mt-8 inline-flex items-center gap-2 rounded-md bg-primary px-6 py-3 font-medium text-primary-foreground transition-opacity hover:opacity-90"
                     >
-                        {isLoggedIn ? 'See my paths' : 'Create my free account'}
+                        {isLoggedIn ? t('hero.cta.mine') : t('nav.register')}
                         <ArrowRight className="size-4" />
                     </Link>
                 </section>
