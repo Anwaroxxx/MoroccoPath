@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin;
+use App\Http\Controllers\ExploreController;
 use Illuminate\Support\Facades\Route;
 
 Route::inertia('/', 'home')->name('home');
@@ -22,7 +23,18 @@ Route::middleware(['auth', 'verified', 'can:access-admin'])
 
         Route::get('institutions', [Admin\InstitutionsController::class, 'index'])->name('institutions.index');
         Route::get('programs', [Admin\ProgramsController::class, 'index'])->name('programs.index');
+        Route::patch('programs/{program}/status', [Admin\ProgramsController::class, 'updateStatus'])
+            ->name('programs.status')
+            ->middleware('throttle:30,1');
         Route::get('sources', [Admin\SourcesController::class, 'index'])->name('sources.index');
     });
+
+/*
+ * Public exploration (spec §21). Only published records are visible here.
+ */
+Route::get('programs', [ExploreController::class, 'programs'])->name('programs.index');
+Route::get('programs/{program:slug}', [ExploreController::class, 'programShow'])->name('programs.show');
+Route::get('institutions', [ExploreController::class, 'institutions'])->name('institutions.index');
+Route::get('institutions/{institution:slug}', [ExploreController::class, 'institutionShow'])->name('institutions.show');
 
 require __DIR__.'/settings.php';
