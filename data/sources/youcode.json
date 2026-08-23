@@ -1,0 +1,10 @@
+{
+    "slug": "youcode",
+    "name": "YouCode (official website)",
+    "source_type": "official_institution",
+    "website": "https://youcode.ma",
+    "endpoint": null,
+    "format": "json",
+    "default_academic_year": "2026/2027",
+    "notes": "Ingest curated payloads from data/sources/payloads/youcode.json via --fixture. Facts transcribed from youcode.ma on 2026-08-23."
+}

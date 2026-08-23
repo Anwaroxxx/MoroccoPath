@@ -1,0 +1,11 @@
+{
+    "slug": "lionsgeek",
+    "name": "LionsGeek (press coverage of the official initiative)",
+    "source_type": "recognized_secondary_source",
+    "website": "https://lionsgeek.ma",
+    "endpoint": null,
+    "format": "json",
+    "default_academic_year": "2026/2027",
+    "notes": "Trust level 5: facts transcribed from press coverage on 2026-08-23, pending confirmation by the institution itself.",
+    "_notice": "Lower trust by design — see spec §4 source hierarchy."
+}

@@ -1,0 +1,33 @@
+{
+    "_notice": "Curated from the official YouCode website (https://youcode.ma) on 2026-08-23: campus addresses from the 'Où nous trouver' page. Ingestion marks everything NEEDS_REVIEW until an administrator verifies it.",
+    "institutions": [
+        {
+            "external_identifier": "YOUCODE-MA",
+            "name": "YouCode",
+            "alt_names": ["YouCode School"],
+            "type": "coding_school",
+            "website": "https://youcode.ma",
+            "source_url": "https://youcode.ma/find-us",
+            "description": "École inclusive de développement web, ouverte à toutes et à tous.",
+            "campuses": [
+                {"name": "YouCode Youssoufia", "city": "Youssoufia", "region": "Marrakech-Safi", "address": "Boulevard Moulay Youssef, Youssoufia"},
+                {"name": "YouCode Safi", "city": "Safi", "region": "Marrakech-Safi", "address": "Résidence Naourass, Boulevard Ibnabdellah, ville nouvelle, Safi"},
+                {"name": "YouCode Nador", "city": "Nador", "region": "Oriental", "address": "Délégation Provinciale de la Jeunesse et Sport, Avenue Taouima, Nador"}
+            ],
+            "programs": [
+                {
+                    "external_identifier": "YOUCODE-WEB",
+                    "name": "Développement Web",
+                    "study_mode": "full_time",
+                    "language": "fr",
+                    "source_url": "https://youcode.ma/programme",
+                    "description": "Formation au développement web par projets en auto-apprentissage, avec spécialisation en deuxième année selon les besoins des entreprises marocaines.",
+                    "interests": ["TECHNOLOGY"],
+                    "skills": [],
+                    "rules": [],
+                    "costs": []
+                }
+            ]
+        }
+    ]
+}

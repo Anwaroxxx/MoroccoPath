@@ -1,0 +1,10 @@
+{
+    "slug": "1337",
+    "name": "1337 Coding School (official website)",
+    "source_type": "official_institution",
+    "website": "https://1337.ma",
+    "endpoint": null,
+    "format": "json",
+    "default_academic_year": "2026/2027",
+    "notes": "Ingest curated payloads from data/sources/payloads/1337.json via --fixture. Facts transcribed from 1337.ma on 2026-08-23."
+}

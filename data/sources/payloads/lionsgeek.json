@@ -1,0 +1,48 @@
+{
+    "_notice": "Curated on 2026-08-23 from press coverage (Médias24, Aujourd'hui le Maroc) of the official LionsGeek initiative hosted at 2M, Ain Sebaâ. The official site lionsgeek.ma is JS-rendered; facts below come from recognized secondary sources and stay NEEDS_REVIEW with a lower trust level until confirmed by the institution.",
+    "institutions": [
+        {
+            "external_identifier": "LIONSGEEK-MA",
+            "name": "LionsGeek",
+            "alt_names": ["LionsGeek Casablanca"],
+            "type": "ngo",
+            "website": "https://lionsgeek.ma",
+            "source_url": "https://medias24.com/2023/10/23/lionsgeek-poursuit-ses-formations-courtes-et-gratuites-dans-les-metiers-du-digital/",
+            "description": "Incubateur/école associative dédié aux métiers du digital, installé dans les locaux de 2M à Ain Sebaâ, sur le modèle de MolenGeek.",
+            "campuses": [
+                {"name": "LionsGeek Ain Sebaâ (2M)", "city": "Casablanca", "region": "Casablanca-Settat"}
+            ],
+            "programs": [
+                {
+                    "external_identifier": "LG-WEBDEV",
+                    "name": "Web Développeur",
+                    "study_mode": "full_time",
+                    "duration_months": 6,
+                    "language": "fr",
+                    "source_url": "https://aujourdhui.ma/emploi/lionsgeek-lance-sa-formation-pour-les-metiers-du-digital",
+                    "description": "Formation intensive de six mois au développement web, gratuite, ouverte aux 18-30 ans sans prérequis académique.",
+                    "costs": [
+                        {"cost_type": "tuition_annual", "is_free": true}
+                    ],
+                    "rules": [
+                        {"condition_type": "education_level_min", "name": "Sans prérequis académique", "levels": ["NO_BAC"]},
+                        {"condition_type": "max_age", "name": "18 à 30 ans", "parameters": {"max_age": 30}}
+                    ],
+                    "interests": ["TECHNOLOGY"],
+                    "skills": []
+                },
+                {
+                    "external_identifier": "LG-DCC",
+                    "name": "Digital Content Creator / Digital Marketing",
+                    "study_mode": "full_time",
+                    "duration_months": 6,
+                    "language": "fr",
+                    "source_url": "https://aujourdhui.ma/emploi/lionsgeek-lance-sa-formation-pour-les-metiers-du-digital",
+                    "description": "Formation de six mois aux métiers du contenu numérique et du marketing digital, gratuite.",
+                    "interests": ["COMMUNICATION"],
+                    "skills": []
+                }
+            ]
+        }
+    ]
+}

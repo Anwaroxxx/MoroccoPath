@@ -1,0 +1,40 @@
+{
+    "_notice": "Curated from the official 1337 website (https://1337.ma) on 2026-08-23. Facts limited to what the official pages state. Ingestion marks everything NEEDS_REVIEW until an administrator verifies it.",
+    "institutions": [
+        {
+            "external_identifier": "1337-MA",
+            "name": "1337 Coding School",
+            "alt_names": ["1337", "Treize Trente-Sept"],
+            "type": "coding_school",
+            "website": "https://1337.ma",
+            "source_url": "https://1337.ma/fr/",
+            "description": "École de code nouvelle génération créée et sponsorisée par OCP SA, sur le modèle de l'école 42.",
+            "campuses": [
+                {"name": "1337 Khouribga", "city": "Khouribga", "region": "Béni Mellal-Khénifra"},
+                {"name": "1337 Benguerir (UM6P)", "city": "Benguerir", "region": "Marrakech-Safi"},
+                {"name": "1337 Tétouan (TetouanShore)", "city": "Martil", "region": "Tanger-Tétouan-Al Hoceïma"},
+                {"name": "1337 Rabat", "city": "Rabat", "region": "Rabat-Salé-Kénifra"}
+            ],
+            "programs": [
+                {
+                    "external_identifier": "1337-CORE",
+                    "name": "Formation informatique 1337",
+                    "study_mode": "full_time",
+                    "language": "fr",
+                    "source_url": "https://1337.ma/fr/steps/",
+                    "admission_information": "Admission via candidature.1337.ma : tests de logique et de mémoire en ligne, check-in dans les locaux de Khouribga, puis piscine. Candidats de 18 à 30 ans inclus au 1er novembre de l'année de la rentrée.",
+                    "costs": [
+                        {"cost_type": "tuition_annual", "is_free": true}
+                    ],
+                    "rules": [
+                        {"condition_type": "education_level_min", "name": "Aucun diplôme requis", "levels": ["NO_BAC"]},
+                        {"condition_type": "max_age", "name": "18 à 30 ans inclus", "parameters": {"max_age": 30}},
+                        {"condition_type": "entrance_exam", "name": "Tests en ligne + piscine"}
+                    ],
+                    "interests": ["TECHNOLOGY"],
+                    "skills": []
+                }
+            ]
+        }
+    ]
+}
