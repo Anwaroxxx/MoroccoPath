@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin;
 use App\Http\Controllers\ExploreController;
 use App\Http\Controllers\OrientationController;
+use App\Http\Controllers\PathsController;
 use App\Http\Controllers\ResultsController;
 use Illuminate\Support\Facades\Route;
 
@@ -50,5 +51,8 @@ Route::get('programs', [ExploreController::class, 'programs'])->name('programs.i
 Route::get('programs/{program:slug}', [ExploreController::class, 'programShow'])->name('programs.show');
 Route::get('institutions', [ExploreController::class, 'institutions'])->name('institutions.index');
 Route::get('institutions/{institution:slug}', [ExploreController::class, 'institutionShow'])->name('institutions.show');
+Route::get('compare', [ExploreController::class, 'compare'])->name('compare');
+Route::get('paths', [PathsController::class, 'index'])->name('paths.index');
+Route::get('paths/{careerPath:slug}', [PathsController::class, 'show'])->name('paths.show');
 
 require __DIR__.'/settings.php';

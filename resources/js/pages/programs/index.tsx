@@ -1,4 +1,4 @@
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, router } from '@inertiajs/react';
 import { MapPinned } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
@@ -42,7 +42,7 @@ export default function ProgramsIndex({
             }
         }
 
-        window.location.href = `/programs${params.toString() ? `?${params}` : ''}`;
+        router.get(params.toString() ? `/programs?${params}` : '/programs');
     };
 
     return (

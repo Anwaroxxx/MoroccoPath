@@ -10,6 +10,9 @@ use App\Enums\SourceType;
 use App\Enums\StudyMode;
 use App\Enums\VerificationStatus;
 use App\Models\Campus;
+use App\Models\Career;
+use App\Models\CareerPath;
+use App\Models\CareerPathStep;
 use App\Models\EducationLevel;
 use App\Models\Field;
 use App\Models\Institution;
@@ -158,5 +161,63 @@ class DemoContentSeeder extends Seeder
         $programming = Skill::query()->updateOrCreate(['code' => 'PROGRAMMING'], ['name' => 'Programming']);
         $git = Skill::query()->updateOrCreate(['code' => 'GIT'], ['name' => 'Git']);
         $program->skills()->syncWithoutDetaching([$programming->id, $git->id]);
+
+        $this->seedDemoCareerPath($program);
+    }
+
+    /**
+     * [DEMO] career graph illustrating multiple entry points converging on
+     * one target career (spec §20). Labeled DEMO — not a real Moroccan path.
+     */
+    private function seedDemoCareerPath(Program $program): void
+    {
+        $career = Career::query()->firstOrCreate(
+            ['code' => 'SOFTWARE_DEVELOPER'],
+            ['name' => '[DEMO] Software Developer'],
+        );
+        $field = Field::query()->where('code', 'TECHNOLOGY')->first();
+        $niveauBac = EducationLevel::query()->where('code', 'NIVEAU_BAC')->first();
+        $bac = EducationLevel::query()->where('code', 'BAC')->first();
+
+        $path = CareerPath::query()->updateOrCreate(
+            ['slug' => 'demo-software-developer'],
+            [
+                'name' => '[DEMO] Become a Software Developer',
+                'description' => 'Demonstration path with two entry points. Replace with verified paths via ingestion.',
+                'field_id' => $field?->id,
+                'target_career_id' => $career->id,
+            ],
+        );
+
+        // Entry point A: without the Bac.
+        $a1 = CareerPathStep::query()->create([
+            'career_path_id' => $path->id, 'position' => 1,
+            'title' => '[DEMO] Start: Niveau Bac',
+            'education_level_id' => $niveauBac?->id,
+        ]);
+        $a2 = CareerPathStep::query()->create([
+            'career_path_id' => $path->id, 'parent_step_id' => $a1->id, 'position' => 2,
+            'title' => '[DEMO] Free coding school (2 years)',
+            'program_id' => $program->id,
+        ]);
+        CareerPathStep::query()->create([
+            'career_path_id' => $path->id, 'parent_step_id' => $a2->id, 'position' => 3,
+            'title' => '[DEMO] Junior developer',
+        ]);
+
+        // Entry point B: through university.
+        $b1 = CareerPathStep::query()->create([
+            'career_path_id' => $path->id, 'position' => 2,
+            'title' => '[DEMO] Start: Bac',
+            'education_level_id' => $bac?->id,
+        ]);
+        $b2 = CareerPathStep::query()->create([
+            'career_path_id' => $path->id, 'parent_step_id' => $b1->id, 'position' => 3,
+            'title' => '[DEMO] Licence en informatique',
+        ]);
+        CareerPathStep::query()->create([
+            'career_path_id' => $path->id, 'parent_step_id' => $b2->id, 'position' => 4,
+            'title' => '[DEMO] Junior developer',
+        ]);
     }
 }
