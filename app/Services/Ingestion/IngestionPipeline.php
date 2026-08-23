@@ -2,15 +2,20 @@
 
 namespace App\Services\Ingestion;
 
+use App\Enums\EligibilityConditionType;
 use App\Enums\ProgramVersionStatus;
 use App\Enums\SourceType;
 use App\Enums\VerificationStatus;
+use App\Models\BacBranch;
 use App\Models\Campus;
+use App\Models\Cost;
 use App\Models\EducationLevel;
+use App\Models\EligibilityRule;
 use App\Models\Institution;
 use App\Models\Interest;
 use App\Models\Program;
 use App\Models\ProgramVersion;
+use App\Models\Qualification;
 use App\Models\Skill;
 use App\Models\Source;
 use App\Models\SourceReference;
@@ -113,7 +118,7 @@ final class IngestionPipeline
             'description' => $record->description,
         ]);
 
-        $this->attachProvenance($institution, $source, $this->resolveYear(null));
+        $this->attachProvenance($institution, $source, $this->resolveYear(null), $record->sourceUrl);
 
         foreach ($record->campuses as $campus) {
             $attributes = $campus->toArray();
@@ -145,6 +150,7 @@ final class IngestionPipeline
             'duration_label' => $record->durationLabel,
             'language' => $record->language,
             'description' => $record->description,
+            'admission_information' => $record->admissionInformation,
             'academic_year' => $year,
         ]);
 
@@ -162,6 +168,7 @@ final class IngestionPipeline
                 'institution_id' => $institution->id,
                 'name' => $validated['name'],
                 'slug' => $this->uniqueProgramSlug($slug),
+                'external_identifier' => $record->externalIdentifier,
                 'description' => $validated['description'],
                 'duration_months' => $validated['duration_months'],
                 'duration_label' => $validated['duration_label'],
@@ -184,13 +191,117 @@ final class IngestionPipeline
             [
                 'status' => ProgramVersionStatus::Active,
                 'duration_months' => $validated['duration_months'],
+                'admission_information' => $validated['admission_information'] ?? null,
             ],
         );
 
-        $this->attachProvenance($program, $source, $year);
+        foreach ($record->costs as $cost) {
+            Cost::query()->updateOrCreate(
+                [
+                    'program_id' => $program->id,
+                    'academic_year' => $year,
+                    'cost_type' => (string) Arr::get($cost, 'cost_type', 'other'),
+                ],
+                [
+                    'amount_min' => Arr::get($cost, 'amount_min'),
+                    'amount_max' => Arr::get($cost, 'amount_max'),
+                    'currency' => Arr::get($cost, 'currency', 'MAD'),
+                    'is_free' => (bool) Arr::get($cost, 'is_free', false),
+                ],
+            );
+        }
+
+        $this->storeEligibilityRules($program->id, $record);
+
+        $this->attachProvenance($program, $source, $year, $record->sourceUrl);
     }
 
-    private function attachProvenance(Institution|Program $model, Source $source, string $year): void
+    /**
+     * Replaces the rule set for this program with the payload's rules.
+     * Rules referencing unknown taxonomy codes are rejected wholesale —
+     * a half-stored rule set would silently change eligibility.
+     */
+    private function storeEligibilityRules(int $programId, NormalizedProgram $record): void
+    {
+        if ($record->rules === []) {
+            return;
+        }
+
+        $prepared = [];
+
+        foreach ($record->rules as $rule) {
+            $type = EligibilityConditionType::tryFrom((string) Arr::get($rule, 'condition_type', ''));
+
+            if ($type === null) {
+                throw new RuntimeException(sprintf(
+                    'Program [%s]: unknown eligibility condition type [%s].',
+                    $record->name,
+                    (string) Arr::get($rule, 'condition_type', ''),
+                ));
+            }
+
+            $levelIds = [];
+            foreach ((array) Arr::get($rule, 'levels', []) as $code) {
+                $id = EducationLevel::query()->where('code', $code)->value('id');
+                if ($id === null) {
+                    throw new RuntimeException(sprintf('Program [%s]: unknown education level code [%s].', $record->name, (string) $code));
+                }
+                $levelIds[] = $id;
+            }
+
+            $branchIds = [];
+            foreach ((array) Arr::get($rule, 'bac_branches', []) as $code) {
+                $id = BacBranch::query()->where('code', $code)->value('id');
+                if ($id === null) {
+                    throw new RuntimeException(sprintf('Program [%s]: unknown Bac branch code [%s].', $record->name, (string) $code));
+                }
+                $branchIds[] = $id;
+            }
+
+            $qualificationIds = [];
+            foreach ((array) Arr::get($rule, 'qualifications', []) as $code) {
+                $id = Qualification::query()->where('code', $code)->value('id');
+                if ($id === null) {
+                    throw new RuntimeException(sprintf('Program [%s]: unknown qualification code [%s].', $record->name, (string) $code));
+                }
+                $qualificationIds[] = $id;
+            }
+
+            $prepared[] = [$type, $levelIds, $branchIds, $qualificationIds, $rule];
+        }
+
+        // All rules validated: safe to replace.
+        EligibilityRule::query()->where('program_id', $programId)->delete();
+
+        foreach ($prepared as [$type, $levelIds, $branchIds, $qualificationIds, $rule]) {
+            /** @var EligibilityConditionType $type */
+            /** @var array<int, int> $levelIds */
+            /** @var array<int, int> $branchIds */
+            /** @var array<int, int> $qualificationIds */
+            /** @var array<string, mixed> $rule */
+            $created = EligibilityRule::create([
+                'program_id' => $programId,
+                'name' => Arr::get($rule, 'name') !== null ? TextNormalizer::clean((string) $rule['name']) : null,
+                'condition_type' => $type,
+                'negate' => (bool) Arr::get($rule, 'negate', false),
+                'logic_group' => (string) Arr::get($rule, 'logic_group', 'default'),
+                'parameters' => Arr::get($rule, 'parameters'),
+                'is_active' => true,
+            ]);
+
+            if ($levelIds !== []) {
+                $created->educationLevels()->syncWithoutDetaching($levelIds);
+            }
+            if ($branchIds !== []) {
+                $created->bacBranches()->syncWithoutDetaching($branchIds);
+            }
+            if ($qualificationIds !== []) {
+                $created->qualifications()->syncWithoutDetaching($qualificationIds);
+            }
+        }
+    }
+
+    private function attachProvenance(Institution|Program $model, Source $source, string $year, ?string $sourceUrl = null): void
     {
         SourceReference::query()->updateOrCreate(
             [
@@ -201,6 +312,7 @@ final class IngestionPipeline
             ],
             [
                 'verification_status' => VerificationStatus::NeedsReview,
+                'source_url' => $sourceUrl,
                 // last_verified_at stays NULL: ingestion never self-verifies.
             ],
         );

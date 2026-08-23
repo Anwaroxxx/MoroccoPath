@@ -60,6 +60,7 @@ final class RecordValidator
             'duration_label' => ['nullable', 'string', 'max:64'],
             'language' => ['nullable', 'string', 'max:16'],
             'description' => ['nullable', 'string', 'max:5000'],
+            'admission_information' => ['nullable', 'string', 'max:2000'],
             'academic_year' => ['nullable', 'regex:/^\d{4}\/\d{4}$/'],
         ]);
     }

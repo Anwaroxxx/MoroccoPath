@@ -88,6 +88,18 @@ final class JsonPayloadParser
                 academicYear: Arr::get($program, 'academic_year'),
                 interests: array_values(array_map(strval(...), (array) Arr::get($program, 'interests', []))),
                 skills: array_values(array_map(strval(...), (array) Arr::get($program, 'skills', []))),
+                admissionInformation: Arr::get($program, 'admission_information') !== null
+                    ? TextNormalizer::clean((string) $program['admission_information'])
+                    : null,
+                sourceUrl: Arr::get($program, 'source_url'),
+                costs: array_values(array_filter(
+                    array_map(fn ($cost): ?array => is_array($cost) ? $cost : null,
+                        (array) Arr::get($program, 'costs', [])),
+                )),
+                rules: array_values(array_filter(
+                    array_map(fn ($rule): ?array => is_array($rule) ? $rule : null,
+                        (array) Arr::get($program, 'rules', [])),
+                )),
             );
         }
 
@@ -113,6 +125,7 @@ final class JsonPayloadParser
             description: Arr::get($record, 'description'),
             campuses: $campuses,
             programs: $programs,
+            sourceUrl: Arr::get($record, 'source_url'),
         );
     }
 }

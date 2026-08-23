@@ -23,6 +23,7 @@ final class NormalizedInstitution
         public readonly ?string $description = null,
         public readonly array $campuses = [],
         public readonly array $programs = [],
+        public readonly ?string $sourceUrl = null,
     ) {}
 
     /**

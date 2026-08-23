@@ -10,6 +10,8 @@ final class NormalizedProgram
     /**
      * @param  array<int, string>  $interests
      * @param  array<int, string>  $skills
+     * @param  array<int, array<string, mixed>>  $costs
+     * @param  array<int, array<string, mixed>>  $rules
      */
     public function __construct(
         public readonly string $name,
@@ -23,5 +25,9 @@ final class NormalizedProgram
         public readonly ?string $academicYear = null,
         public readonly array $interests = [],
         public readonly array $skills = [],
+        public readonly ?string $admissionInformation = null,
+        public readonly ?string $sourceUrl = null,
+        public readonly array $costs = [],
+        public readonly array $rules = [],
     ) {}
 }
