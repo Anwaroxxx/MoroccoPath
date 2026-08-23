@@ -100,6 +100,57 @@ class ExploreController extends Controller
         ]);
     }
 
+    public function compare(Request $request): Response
+    {
+        $slugs = collect(explode(',', (string) $request->query('programs', '')))
+            ->map(fn ($slug) => trim((string) $slug))
+            ->filter()
+            ->unique()
+            ->take(3)
+            ->values();
+
+        $programs = Program::query()
+            ->where('status', ProgramStatus::Published->value)
+            ->whereIn('slug', $slugs)
+            ->with([
+                'institution:id,canonical_name',
+                'campus:id,name,city',
+                'costs',
+                'careers:id,name',
+                'eligibilityRules' => fn ($query) => $query
+                    ->where('is_active', true)
+                    ->with(['educationLevels', 'qualifications', 'bacBranches'])
+                    ->orderBy('sort_order'),
+            ])
+            ->get();
+
+        $rows = $programs->map(fn (Program $program): array => [
+            'name' => $program->name,
+            'slug' => $program->slug,
+            'institution' => $program->institution->canonical_name,
+            'city' => $program->campus !== null
+                ? $program->campus->city
+                : $program->institution->campuses()->value('city'),
+            'study_mode' => $program->study_mode->label(),
+            'duration_label' => $program->duration_label,
+            'is_free' => $program->costs->contains(fn ($cost): bool => $cost->is_free),
+            'requirements' => $program->eligibilityRules
+                ->filter(fn ($rule): bool => ! $rule->condition_type->isProcessCondition())
+                ->map(fn ($rule): string => RequirementDescriber::describe($rule))
+                ->values()
+                ->all(),
+            'careers' => $program->careers->pluck('name')->all(),
+        ]);
+
+        return Inertia::render('compare', [
+            'selected' => $slugs->all(),
+            'rows' => $rows,
+            'catalog' => $this->search->search($request)->map(
+                fn (Program $program): array => ['slug' => $program->slug, 'name' => $program->name],
+            )->all(),
+        ]);
+    }
+
     public function institutions(Request $request): Response
     {
         return Inertia::render('institutions/index', [
