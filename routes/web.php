@@ -2,9 +2,23 @@
 
 use App\Http\Controllers\Admin;
 use App\Http\Controllers\ExploreController;
+use App\Http\Controllers\OrientationController;
+use App\Http\Controllers\ResultsController;
 use Illuminate\Support\Facades\Route;
 
 Route::inertia('/', 'home')->name('home');
+
+/*
+ * Personalized flow (spec §13–14): questionnaire then ranked results.
+ * Requires an account so results can be saved and revisited.
+ */
+Route::middleware(['auth', 'verified'])->group(function (): void {
+    Route::get('orientation', [OrientationController::class, 'show'])->name('orientation');
+    Route::patch('orientation', [OrientationController::class, 'update'])
+        ->name('orientation.update')
+        ->middleware('throttle:20,1');
+    Route::get('results', [ResultsController::class, 'index'])->name('results');
+});
 
 /*
  * Internal administration (spec §22, §33). Never exposed publicly:
